@@ -32,7 +32,7 @@ guessButton.addEventListener("click", function (e) {
     const crossCheck = validator(playerInput);
     console.log(crossCheck);
 
-    if (crossCheck !== undefined) {
+    if (crossCheck) {
         makeGuess(playerInput);
     }
 });
@@ -54,11 +54,50 @@ const validator = function (input) {
 
 //Function to capture input
 const makeGuess = function(aLetter) {
-    aLetter.toUpperCase();
+    aLetter = aLetter.toUpperCase();
     if (guessedLetters.includes(aLetter)) {
         message.innerText = "You've already entered this letter. Try again.";
     } else {
         guessedLetters.push(aLetter);
+        console.log(guessedLetters);
+        addGuesses();
+        updateW(guessedLetters);
     }
-    console.log(guessedLetters);
+};
+
+//Function to update player guesses
+const addGuesses = function () {
+    guesses.innerHTML = "";
+    for (const item of guessedLetters) {
+        const li = document.createElement("li");
+        li.innerText = item;
+        guesses.append(li);
+    }
+};
+
+//Function to update the word in progress
+const updateW = function (theGuesses) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const revealWord = [];
+    console.log(wordArray);
+    for (const item of wordArray) {
+        if (theGuesses.includes(item)) {
+            revealWord.push(item.toUpperCase());
+        } else {
+            revealWord.push("●");
+        }
+    }
+    console.log(revealWord);
+    wordInProgress.innerText = revealWord.join("");
+    checkWon();
+};
+
+
+//Function to check if player won
+const checkWon = function () {
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        message.classList.add("win");
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+    }
 };
