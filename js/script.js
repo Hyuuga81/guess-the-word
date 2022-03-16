@@ -3,13 +3,15 @@ const guessButton = document.querySelector(".guess");
 const letterElement = document.querySelector(".letter");
 const wordInProgress = document.querySelector(".word-in-progress");
 const remaining = document.querySelector(".remaining");
-const span = document.querySelector("span");
+const span = document.querySelector(".remaining span");
 const message = document.querySelector(".message");
 const playAgain = document.querySelector(".play-again");
 
 let word = "magnolia";
 const guessedLetters = [];
 let remainingGuesses = 8;
+
+console.clear();
 
 //Async function to get word from API
 const getWord = async function () {
@@ -27,7 +29,7 @@ const getWord = async function () {
 
 getWord();
 
-console.clear();
+
 
 //Function to update words in progress with ●
 const placeHolder = function (theWord) {
@@ -82,7 +84,6 @@ const makeGuess = function(aLetter) {
         addGuesses();
         guessCounter(aLetter);      //counter function
         updateW(guessedLetters);
-
     }
 };
 
@@ -109,7 +110,7 @@ const updateW = function (theGuesses) {
             revealWord.push("●");
         }
     }
-    console.log(revealWord);
+    // console.log(revealWord);
     wordInProgress.innerText = revealWord.join("");
     checkWon();
 };
@@ -126,9 +127,10 @@ const guessCounter = function (guessInput) {
 
     if (remainingGuesses === 0) {
         message.innerHTML = `Game over! The word was <span class="highlight">${upperWord}</span>. Thanks for playing`;
+        startOver();        //Startover
     } else if (remainingGuesses === 1) {
         span.innerText = `${remainingGuesses} guess`;
-    } else if (remainingGuesses > 1) {
+    } else  {
         span.innerText = `${remainingGuesses} guesses`;
     }
 };
@@ -138,7 +140,29 @@ const checkWon = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        startOver();        //Startover
     }
 };
 
+// Function to start over
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remaining.classList.add("hide");
+    guesses.classList.add("hide");
+    playAgain.classList.remove("hide");
+};
 
+playAgain.addEventListener("click", function () {
+    message.classList.remove("win");
+    message.innerText = "";
+    guesses.innerHTML = "";
+    remainingGuesses = 8;
+    guessedLetters = [];
+    
+    span.innerText = `${remainingGuesses} guesses`;
+    playAgain.classList.add("hide");
+    remaining.classList.remove("hide");
+    guessButton.classList.remove("hide");
+    guesses.classList.remove("hide");
+    getWord();
+});
