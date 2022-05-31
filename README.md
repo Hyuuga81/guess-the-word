@@ -1,0 +1,2 @@
+# guess-the-word
+This Guess the word game allows you to make 8 guesses to figure out the hidden word represented by circles. As you continue to guess it keeps track of remaining guesses and when you make correct guesses it reveals the letter. When you make correct entries, win or lose, there is a corresponding notification to the player. This app uses DOM manipulation, arrays, loops and forms to provide a simple and entertaining experience.
